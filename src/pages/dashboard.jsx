@@ -1,4 +1,4 @@
-import { Box, Button, Chip, MenuItem, Select, Typography } from "@mui/material";
+import { Box, Chip, MenuItem, Select, Typography } from "@mui/material";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { Doughnut } from "react-chartjs-2";
 import {
@@ -11,8 +11,15 @@ import {
   Title,
   PointElement,
   LineElement,
+  BarElement,
 } from "chart.js";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import ExamPaperAllotted from "../components/exampapers";
+import ExamPaperStatus from "../components/exampaperstatus";
+import StaffByCourse from "../components/staffbycourse";
+import StudentEnrollment from "../components/studentenrollment";
+import StudentsPie from "../components/studentspie";
+
 
 ChartJS.register(
   ArcElement,
@@ -22,7 +29,8 @@ ChartJS.register(
   LinearScale,
   Title,
   PointElement,
-  LineElement
+  LineElement,
+  BarElement
 );
 const Dashboard = () => {
   const centerText = {
@@ -31,8 +39,8 @@ const Dashboard = () => {
       const { ctx, width, height } = chart;
       ctx.restore();
 
-      const fontSize = (height / 114).toFixed(2);
-      ctx.font = `${fontSize}em sans-serif`;
+      const fontSize = 2.0;
+      ctx.font = `${fontSize}em "Poppins",sans-serif`;
       ctx.textBaseline = "middle";
       ctx.fillStyle = "black";
       const totalDegrees = "17";
@@ -42,7 +50,7 @@ const Dashboard = () => {
       const textY = height / 2 - 15;
       ctx.fillText(totalDegrees, textX, textY);
 
-      ctx.font = `${fontSize * 0.5}em sans-serif`;
+      ctx.font = `${fontSize * 0.5}em "Poppins",sans-serif`;
       ctx.fillStyle = "gray";
       const subtitle = "Total degrees";
       const subtitleX = Math.round(
@@ -67,27 +75,31 @@ const Dashboard = () => {
   ];
 
   const data = {
-    labels: ["Bachelor", "Masters", "Ph.D"],
+    labels: ["Masters", "Bachelor", "Ph.D"],
     datasets: [
       {
-        data: [10, 5, 2],
-        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
-        hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+        data: [5, 10, 2],
+        backgroundColor: ["#6240c4", "#fb8b3b", "#00de44"],
+        hoverBackgroundColor: ["#6240c4", "#fb8b3b", "#00de44"],
+        fontFamily: "Poppins,sans-serif",
       },
     ],
   };
+
   return (
     <>
       <div className="p-4 bg-gray-100 ">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-14">
           <div className="flex items-center">
             <img
               src="https://www.amity.edu/images/amity_logo.png"
               alt="Amity University"
-              className="h-24 w-24 mr-4"
+              className="h-28 w-24 mr-4"
             />
             <div>
-              <h1 className="text-2xl font-bold mb-2">Amity University</h1>
+              <h1 className="text-2xl font-bold mb-2 text-header">
+                Amity University
+              </h1>
               <a href="https://www.amity.edu" className="text-green-600 mb-3">
                 www.amity.edu
               </a>
@@ -105,42 +117,50 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-          <div className="flex justify-center items-center border border-slate-200 p-4 rounded-lg  bg-white ">
+          <div className="flex justify-center items-center border border-slate-200 p-4 rounded-lg   ">
             <div className="flex-1 text-center border-r border-gray-200 pr-12">
               <div className="text-left">
                 <Icon
-                  icon="material-symbols-light:book-sharp"
+                  icon="tabler:receipt-dollar"
                   width="1.8em"
                   height="1.8em"
-                  style={{ color: "#b62525" }}
+                  style={{ color: " #8325b6" }}
                 />
               </div>
-              <div className=" text-left text-gray-600">Total courses</div>
-              <div className="text-2xl text-left font-bold mt-2">2,457</div>
+              <div className=" text-left text-gray-400">Total courses</div>
+              <div className="text-2xl text-left font-bold mt-2 text-header">
+                2,457
+              </div>
             </div>
             <div className="flex-1 text-center border-r border-gray-200 px-12">
               <div className="text-left">
                 <Icon
-                  icon="material-symbols-light:book-sharp"
+                  icon="healthicons:i-training-class"
                   width="1.8em"
                   height="1.8em"
-                  style={{ color: "#b62525" }}
+                  style={{ color: "#737075" }}
                 />
               </div>
-              <div className=" text-left text-gray-600 ">Total Students</div>
-              <div className="text-2xl font-bold mt-2 text-left">16,08,456</div>
+              <div className=" text-left text-gray-400 ">Total Students</div>
+              <div className="text-2xl font-bold mt-2 text-left text-header">
+                16,08,456
+              </div>
             </div>
             <div className="flex-1 text-center pl-12 mr-1">
               <div className="text-left">
                 <Icon
-                  icon="material-symbols-light:book-sharp"
+                  icon="game-icons:teacher"
                   width="1.8em"
                   height="1.8em"
-                  style={{ color: "#b62525" }}
+                  style={{ color: "#11c804" }}
                 />
               </div>
-              <div className="text-left text-gray-600 whitespace-nowrap">Total Teachers</div>
-              <div className="text-2xl font-bold mt-2 text-left">1,503</div>
+              <div className="text-left text-gray-400 whitespace-nowrap">
+                Total Teachers
+              </div>
+              <div className="text-2xl font-bold mt-2 text-left text-header">
+                1,503
+              </div>
             </div>
           </div>
         </div>
@@ -164,18 +184,9 @@ const Dashboard = () => {
           </div>
           <div>
             <a className="mr-2 underline">View All Exams</a>
-
-            <Button
-              variant="contained"
-              sx={{
-                backgroundColor: "white",
-                color: "rgb(34, 197, 94)",
-                borderRadius: "10px",
-                boxShadow: "none",
-              }}
-            >
+            <button className="bg-white text-black rounded-lg py-2 px-4">
               Publish
-            </Button>
+            </button>
           </div>
           <Icon
             icon="carbon:close-filled"
@@ -188,42 +199,52 @@ const Dashboard = () => {
       <div className="bg-gray-100 p-4 mt-5">
         <Grid2 container spacing={2}>
           <Grid2 xs={6}>
-            <Box className="bg-white p-4 rounded-md" style={{ height: "100%" }}>
-              <div className="flex justify-between mb-3">
+            <Box className="bg-white rounded-md" style={{ height: "100%" }}>
+              <div className="flex justify-between mb-3 p-4 border-b border-b-slate-200">
                 <Typography variant="h6" component="h3" className="text-header">
-                  Semester
+                  Semesters
                   <Typography variant="subtitle2" className="text-gray-500">
                     Total number of semesters by course
                   </Typography>
                 </Typography>
+
                 <Select
-                  defaultValue="All"
+                  defaultValue="Masters"
                   sx={{ height: "2rem", borderRadius: "10px" }}
                 >
-                  <MenuItem value="All">All</MenuItem>
+                  <MenuItem value="Masters">Masters</MenuItem>
                   <MenuItem value="Bachelors">Bachelors</MenuItem>
                   <MenuItem value="Masters">Masters</MenuItem>
                   <MenuItem value="PhD">PhD</MenuItem>
                 </Select>
               </div>
-              {courses.map((course, index) => (
-                <div
-                  key={index}
-                  className="flex justify-between py-3 border-t border-t-slate-600"
-                >
-                  <Typography variant="p" className="text-violet-700">
-                    {course.degree}
-                    <br />
-                    <span className="text-sm text-header">{course.title}</span>
-                  </Typography>
-                  <Typography sx={{ alignContent: "center" }}>
-                    <span className="text-2xl font-bold">
-                      {course.duration}
-                    </span>{" "}
-                    Semesters
-                  </Typography>
-                </div>
-              ))}
+              <div className="px-4">
+                {courses.map((course, index) => (
+                  <div
+                    key={index}
+                    className={`flex justify-between py-3 ${
+                      index === 4 ? "" : "border-b border-b-slate-200"
+                    }`}
+                  >
+                    <Typography
+                      variant="p"
+                      className="text-violet-700 font-semibold"
+                    >
+                      {course.degree}
+                      <br />
+                      <span className="text-sm text-header">
+                        {course.title}
+                      </span>
+                    </Typography>
+                    <Typography sx={{ alignContent: "center" }}>
+                      <span className="text-2xl font-bold">
+                        {course.duration}
+                      </span>{" "}
+                      <span className="text-gray-300">Semesters</span>
+                    </Typography>
+                  </div>
+                ))}
+              </div>
             </Box>
           </Grid2>
           <Grid2 xs={6}>
@@ -262,8 +283,8 @@ const Dashboard = () => {
                       },
                     },
                   }}
-                  width={220}
-                  height={220}
+                  width={280}
+                  height={280}
                 />
               </Box>
             </Box>
@@ -272,15 +293,15 @@ const Dashboard = () => {
       </div>
       <div className="bg-gray-100 p-4 mt-5">
         <div className="grid grid-cols-2 gap-4 w-full ">
-          <Box className="col-span-1 row-span-2 bg-white p-4  rounded">
-            First Item (Two Rows)
-          </Box>
-          <Box className="col-span-1 bg-white p-4  rounded">
-            Second Item (One Row)
-          </Box>
-          <Box className="col-span-1 bg-white p-4  rounded">
-            Third Item (One Row)
-          </Box>
+          <StaffByCourse />
+          <ExamPaperAllotted />
+          <ExamPaperStatus />
+        </div>
+      </div>
+      <div className="bg-gray-100 p-4 mt-5">
+        <div className="grid grid-cols-2 gap-4 w-full">
+          <StudentEnrollment />
+          <StudentsPie />
         </div>
       </div>
     </>

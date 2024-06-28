@@ -8,7 +8,8 @@ export default {
         Cheader: "#f9f6e9",
       },
       colors: {
-        header: "#007932",
+        header2: "#007932",
+        header: "#335252",
       },
     },
   },
